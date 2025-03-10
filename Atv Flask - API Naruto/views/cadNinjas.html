@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>
+<h4 class="text-center">Cadastro de Ninjas:</h4>
+<br>
+<form action="{{ url_for('cadninjas') }}" method="POST">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" name="nome" id="nome" class="form-control" required>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="vila">Aldeia:</label>
+                    <input type="text" name="vila" id="vila" class="form-control" required>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="rank">Rank:</label>
+                    <input type="text" name="rank" id="rank" class="form-control" required>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <input type="submit" value="Cadastrar" class="btn btn-primary w-100">
+            </div>
+        </div>
+    </div>
+</form>
+<br>
+<hr>
+<br>
+<h4 class="text-center">Ninjas Cadastrados:</h4>
+<br>
+<div class="container">
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Aldeia</th>
+                <th>Rank</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ninja in ninja_list %}
+                <tr>
+                    <td>{{ ninja.nome }}</td>
+                    <td>{{ ninja.vila }}</td>
+                    <td>{{ ninja.rank }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
+
+
+

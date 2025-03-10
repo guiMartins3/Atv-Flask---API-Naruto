@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <h4> Bem-Vindo a página de Personagens Favoritos! </h4>
+    <br>
+
+    <form action="{{url_for('ninjas')}}" method="POST">
+        <div class="row">
+            <div class="col-auto">
+                <input type="text" name="ninja" id="ninja" class="form-control" placeholder="Digite o nome do ninja">
+            </div>
+            <div class="col-auto">
+                <input type="submit" value="Cadastrar" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+    
+    <hr>
+    <h4> Personagens Favoritos:  </h4>
+    <ol>
+        {% for ninja in ninja_list2: %}
+        <li> {{ninja}} </li>
+        {% endfor %}
+    </ol>
+
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container p-4" style="background-color: white; border-radius: 8px; ">
+        <h1 class="text-center">Lista de Personagens: </h1>
+        <br>
+        <div class="row">
+            {% for character in characters %}
+            <div class="col-md-3 mb-4">
+                <div class="card" style="width: 16rem;">
+                    <img src="{{ character.profile_image }}" class="card-img-top" alt="{{ character.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ character.name }}</h5>
+                        <p><strong>Aldeia:</strong> {{ character.village }}</p>
+                        <p><strong>Rank:</strong> {{ character.rank }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock content %}
