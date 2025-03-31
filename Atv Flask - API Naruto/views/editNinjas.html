@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="col-md-6 m-auto">
+    <h3 style="text-align: center;"> Editar Personagem: </h3><br>
+    <form action="{{url_for('editninja', id=personagem.id)}}" method="POST">
+        <!-- Campo para nome do personagem -->
+        <input type="text" name="nome" class="form-control" value="{{personagem.nome}}" placeholder="Digite o Nome" required>
+        
+        <!-- Campo para aldeia do personagem -->
+        <input type="text" name="aldeia" class="form-control" value="{{personagem.aldeia}}" placeholder="Digite a Aldeia" required>
+        
+        <!-- Campo para rank do personagem -->
+        <input type="text" name="rank" class="form-control" value="{{personagem.rank}}" placeholder="Digite o Rank" required>
+        
+        <!-- Botão para submeter o formulário -->
+        <input type="submit" value="Alterar" class="btn btn-warning" onclick="return confirm('Confirma as alterações?')">
+        
+        <!-- Botão para cancelar a edição e voltar à lista -->
+        <a href="{{url_for('cadninjas')}}"><input type="button" value="Cancelar" class="btn btn-danger"></a>
+    </form>
+</div>
+
+{% endblock content %}

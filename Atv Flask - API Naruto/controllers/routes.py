@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for
 import requests
-
-app = Flask(__name__)
+from models.database import db, Personagem
+# Essa biblioteca serve para ler uma determinada URL
+import urllib
+import json
 
 ninja_list2 = []
 ninja_list = [{'nome': 'Naruto Uzumaki', 
@@ -25,12 +27,53 @@ def init_app(app):
 
     @app.route('/cadninjas', methods=['GET', 'POST'])
     def cadninjas():
-        if request.method == 'POST':
-            form_data = request.form.to_dict()
-            ninja_list.append(form_data)
-            return redirect(url_for('cadninjas')) 
+        # Paginação
+        page = request.args.get('page', 1, type=int)  # Pega a página atual, padrão é 1
+        per_page = 5  # Define quantos personagens por página
 
-        return render_template('cadNinjas.html', ninja_list=ninja_list)
+        # Consulta com paginação
+        personagens_page = Personagem.query.paginate(page=page, per_page=per_page)
+
+        if request.method == 'POST':
+            nome = request.form['nome']
+            aldeia = request.form['aldeia']
+            rank = request.form['rank']
+            
+            # Criar um novo personagem e adicionar ao banco de dados
+            novo_personagem = Personagem(nome=nome, aldeia=aldeia, rank=rank)
+            db.session.add(novo_personagem)
+            db.session.commit()
+
+            return redirect(url_for('cadninjas'))
+
+        return render_template('cadNinjas.html', personagens=personagens_page)
+
+    
+    @app.route('/editninja/<int:id>', methods=['GET', 'POST'])
+    def editninja(id):
+        personagem = Personagem.query.get_or_404(id)
+
+        if request.method == 'POST':
+            personagem.nome = request.form['nome']
+            personagem.aldeia = request.form['aldeia']
+            personagem.rank = request.form['rank']
+            
+            # Commit as alterações no banco de dados
+            db.session.commit()
+            
+            return redirect(url_for('cadninjas'))
+
+        return render_template('editNinjas.html', personagem=personagem)
+    
+    @app.route('/deleteninja/<int:id>', methods=['GET', 'POST'])
+    def deleteninja(id):
+        personagem = Personagem.query.get_or_404(id)
+
+        # Excluir o personagem do banco de dados
+        db.session.delete(personagem)
+        db.session.commit()
+
+        return redirect(url_for('cadninjas'))
 
     @app.route('/naruto_characters')
     def naruto_characters():
