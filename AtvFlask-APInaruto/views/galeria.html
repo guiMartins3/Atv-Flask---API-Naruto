@@ -2,8 +2,15 @@
 
 {% block content %}
 
-    {% block content %}
-    <h2 style="text-align: center;">Galeria</h2><br>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+   
     <div class="row">
         {% for img in imagens %}
             <div class="col-md-3 m-auto">
@@ -25,14 +32,6 @@
         </div>
     </div>
 
-    <h2 style="text-align: center;">Galeria</h2>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endwith %}
+   
 
 {% endblock content %}

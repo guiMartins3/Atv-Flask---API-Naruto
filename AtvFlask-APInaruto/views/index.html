@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+
+    <div class="container text-center">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{url_for('static', filename='images/foto1.jpg')}}" alt="First slide" class="d-block mx-auto" style="width: 1300px; height: 700px; object-fit: cover;">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{url_for('static', filename='images/foto2.jpg')}}" alt="Second slide" class="d-block mx-auto" style="width: 1300px; height: 700px; object-fit: cover;">
+                </div>
+                <div class="carousel-item">
+                    <img src="{{url_for('static', filename='images/foto3.jpg')}}" alt="Third slide" class="d-block mx-auto" style="width: 1300px; height: 700px; object-fit: cover;">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="margin-left: -130px;">
+                <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: black;"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="margin-right: -130px;">
+                <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: black;"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock content %}
