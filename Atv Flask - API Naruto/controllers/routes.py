@@ -1,9 +1,14 @@
-from flask import render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import requests
-from models.database import db, Personagem
+from models.database import db, Personagem, Imagem
 # Essa biblioteca serve para ler uma determinada URL
 import urllib
 import json
+import os
+import uuid
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'batata'
 
 ninja_list2 = []
 ninja_list = [{'nome': 'Naruto Uzumaki', 
@@ -93,5 +98,35 @@ def init_app(app):
         else:
             return f"Erro ao acessar a API: {response.status_code}"
 
+
+     #Definindo tipos de arquivos permitidos
+    FILE_TYPES=set(['png', 'jpg', 'jpeg', 'gif'])
+    def arquivos_permitidos(filename):
+        return'.'in filename and filename.rsplit('.', 1)[1].lower() in FILE_TYPES
+
+    @app.route('/galeria', methods=['GET', 'POST'])
+    def galeria():
+        # Seleciona os nomes dos arquivos de imagens no banco
+        imagens = Imagem.query.all()
+        if request.method=='POST':
+            #Captura o arquivo vindo do formulário
+            file =request.files['file']
+            #Verifica se a extensão do arquivo é permitida
+            if not arquivos_permitidos(file.filename):
+                flash("Utilize os tipos de arquivos referentes a imagem.", 'danger')
+                return redirect(request.url)
+            #Define um nome aleatório para o arquivo
+            filename=str(uuid.uuid4())
+            
+            #Gravando o nome do arquivo no banco
+            img = Imagem(filename)
+            db.session.add(img)
+            db.session.commit()
+ 
+            #Salva o arquivo na pasta de uploads
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flash("Imagem enviada com sucesso!", 'success')
+        return render_template('galeria.html')
+    
 if __name__ == '__main__':
     app.run(debug=True)
