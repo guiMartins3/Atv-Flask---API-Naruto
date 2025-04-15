@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 # Criando uma instância do SQLAlchemy
 db = SQLAlchemy()
 
-# Classe responsável por criar a entidade "Games" no banco com seus atributos
+# Classe responsável por criar a entidade "Personagem" no banco com seus atributos
 class Personagem(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(150))

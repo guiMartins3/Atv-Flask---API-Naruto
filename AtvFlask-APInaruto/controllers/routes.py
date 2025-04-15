@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, app, render_template, request, redirect, url_for, flash
 import requests
 from models.database import db, Personagem, Imagem
 # Essa biblioteca serve para ler uma determinada URL
@@ -105,15 +105,16 @@ def init_app(app):
     def galeria():
         # Seleciona os nomes dos arquivos de imagens no banco
         imagens = Imagem.query.all()
-        if request.method=='POST':
+        if request.method == 'POST':
             #Captura o arquivo vindo do formulário
-            file =request.files['file']
+            file = request.files['file']
             #Verifica se a extensão do arquivo é permitida
             if not arquivos_permitidos(file.filename):
                 flash("Utilize os tipos de arquivos referentes a imagem.", 'danger')
                 return redirect(request.url)
+            
             #Define um nome aleatório para o arquivo
-            filename=str(uuid.uuid4())
+            filename = str(uuid.uuid4())
             
             #Gravando o nome do arquivo no banco
             img = Imagem(filename)
@@ -123,7 +124,7 @@ def init_app(app):
             #Salva o arquivo na pasta de uploads
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash("Imagem enviada com sucesso!", 'success')
-        return render_template('galeria.html')
+        return render_template('galeria.html', imagens=imagens)
     
 if __name__ == '__main__':
     app.run(debug=True)
